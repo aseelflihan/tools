@@ -1,0 +1,23 @@
+<h2 class="text-2xl font-semibold mb-4">WhatsApp  Message Cleaner</h2>
+<textarea id="inputText" class="border rounded w-full py-2 px-3 mb-4 h-32"></textarea>
+<button id="cleanButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Clean Messages
+</button>
+<textarea id="outputText" class="border rounded w-full py-2 px-3 mb-4 h-32 mt-4" readonly></textarea>
+
+<script>
+    document.getElementById("cleanButton").addEventListener("click", function () {
+        const inputText = document.getElementById("inputText").value;
+        fetch('/clean-messages', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ inputText: inputText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("outputText").value = data.outputText;
+            }
+        });
+    });
+</script>

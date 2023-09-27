@@ -1,0 +1,42 @@
+<!-- add_periods_tool.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Periods Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="bg-white p-6 rounded shadow-md w-full">
+        <h2 class="text-2xl font-semibold mb-4">Add Periods Tool</h2>
+        <label for="inputText" class="block text-sm font-medium text-gray-700">Input Text</label>
+        <textarea id="inputText" class="mt-1 w-full h-32 p-2 border rounded"></textarea>
+        
+        <button id="processButton" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add Periods
+        </button>
+        
+        <label for="outputText" class="block mt-4 text-sm font-medium text-gray-700">Output Text</label>
+        <textarea id="outputText" class="mt-1 w-full h-32 p-2 border rounded" readonly></textarea>
+        
+        <button id="copyButton" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Copy Output
+        </button>
+    </div>
+    
+    <script>
+        document.getElementById('processButton').addEventListener('click', function () {
+            const inputText = document.getElementById('inputText').value;
+            const lines = inputText.split('\n');
+            const outputLines = lines.map(line => line.trim().endsWith('.') ? line : line + '.');
+            document.getElementById('outputText').value = outputLines.join('\n');
+        });
+
+        document.getElementById('copyButton').addEventListener('click', function () {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+        });
+    </script>
+</body>
+</html>

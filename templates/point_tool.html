@@ -1,0 +1,36 @@
+<!-- Point Tool Content -->
+<h2 class="text-2xl font-semibold mb-4">Point Sorter</h2>
+<textarea id="points" class="border rounded w-full py-2 px-3 mb-4 h-32"></textarea>
+<div class="flex space-x-4">
+    <button id="sortButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Sort Points
+    </button>
+    <button id="clearButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        Clear
+    </button>
+</div>
+<textarea id="sortedPoints" class="border rounded w-full py-2 px-3 mb-4 h-32 mt-4" readonly></textarea>
+
+<!-- Point Tool JavaScript -->
+<script>
+    document.getElementById("sortButton").addEventListener("click", function () {
+        const pointsStr = document.getElementById("points").value;
+        const points = pointsStr.split('\n');
+        fetch('/sort-points', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ points: points })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("sortedPoints").value = data.sorted_points.join('\n');
+            }
+        });
+    });
+
+    document.getElementById("clearButton").addEventListener("click", function () {
+        document.getElementById("points").value = '';
+        document.getElementById("sortedPoints").value = '';
+    });
+</script>

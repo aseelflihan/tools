@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>My PDF and Point Tools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
+
+<style>
+  body {
+    background-color: #ffffff; /* Set the background color of the body to white */
+  }
+  /* If you have a specific container div that wraps all your content, you can set its background to white too */
+  #contentContainer {
+    background-color: #ffffff;
+  }
+</style>
+</head>
+
+<body class="flex h-screen overflow-y-auto">
+  <nav class="side-nav w-1/4 p-6 border-r overflow-y-auto">
+    <ul>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="makePdfCopyableTool">Make PDF Copyable</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="pdfTool">PDF Password Remover</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="pointTool">Point Sorter</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="numberTool">Arabic to English Number Converter</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="caseConverterTool">Case Converter</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="textFormatterTool">Text Formatter</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="messageCleanerTool">WhatsApp Message Cleaner</li>
+      <li class="my-2 hover:bg-gray-200 p-2 rounded" id="addPeriodsTool">Add Periods Tool</li>
+    </ul>
+  </nav>
+  <main class="w-3/4 bg-white p-6" id="mainContent">
+    <div class="tool-intro">
+      <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Welcome to Our Tools!</h2>
+      <p class="text-gray-700">Explore a variety of tools designed to make your life easier.</p>
+    </div>
+    <!-- Tool Descriptions -->
+    <!-- Make PDF Copyable Tool -->
+    <div class="flex items-center mt-4 bg-gray-50 p-4 rounded-lg tool-description" id="makePdfCopyableDescription">
+      <i class="fas fa-copy fa-3x mr-4 text-gray-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Make PDF Copyable</h3>
+        <p class="text-gray-600">Unlock the text in your PDF files, allowing them to be copied, edited, and extracted. Ideal for accessibility, data extraction, and content repurposing.</p>
+      </div>
+    </div>
+    <!-- PDF Password Remover Tool -->
+    <div class="flex items-center mt-4 bg-green-50 p-4 rounded-lg tool-description" id="pdfPasswordRemoverDescription">
+      <i class="fas fa-file-pdf fa-3x mr-4 text-green-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">PDF Password Remover</h3>
+        <p class="text-gray-600">Remove passwords from your PDF files with ease, ensuring that your documents are accessible whenever you need them.</p>
+      </div>
+    </div>
+    <!-- Point Sorter Tool -->
+    <div class="flex items-center mt-4 bg-blue-50 p-4 rounded-lg tool-description" id="pointSorterDescription">
+      <i class="fas fa-sort-numeric-up fa-3x mr-4 text-blue-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Point Sorter</h3>
+        <p class="text-gray-600">Efficiently organize and sort your points or numerical data to streamline your workflows and analysis.</p>
+      </div>
+    </div>
+    <!-- Arabic to English Number Converter Tool -->
+    <div class="flex items-center mt-4 bg-yellow-50 p-4 rounded-lg tool-description" id="numberConverterDescription">
+      <i class="fas fa-language fa-3x mr-4 text-yellow-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Arabic to English Number Converter</h3>
+        <p class="text-gray-600">Easily convert numerical values between Arabic and English formats, aiding in cross-language communication and documentation.</p>
+      </div>
+    </div>
+    <!-- Case Converter Tool -->
+    <div class="flex items-center mt-4 bg-red-50 p-4 rounded-lg tool-description" id="caseConverterDescription">
+      <i class="fas fa-text-height fa-3x mr-4 text-red-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Case Converter</h3>
+        <p class="text-gray-600">Conveniently change the case of your text with a single click, supporting various case formats for versatile text manipulation.</p>
+      </div>
+    </div>
+    <!-- Text Formatter Tool -->
+    <div class="flex items-center mt-4 bg-purple-50 p-4 rounded-lg tool-description" id="textFormatterDescription">
+      <i class="fas fa-align-left fa-3x mr-4 text-purple-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Text Formatter</h3>
+        <p class="text-gray-600">Enhance the appearance and readability of your text with our formatting options, tailored to meet your presentation needs.</p>
+      </div>
+    </div>
+    <!-- WhatsApp Message Cleaner Tool -->
+    <div class="flex items-center mt-4 bg-teal-50 p-4 rounded-lg tool-description" id="messageCleanerDescription">
+      <i class="fas fa-eraser fa-3x mr-4 text-teal-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">WhatsApp Message Cleaner</h3>
+        <p class="text-gray-600">Clean and organize your WhatsApp conversations by removing unnecessary clutter for a smoother messaging experience.</p>
+      </div>
+    </div>
+    <!-- Add Periods Tool -->
+    <div class="flex items-center mt-4 bg-indigo-50 p-4 rounded-lg tool-description" id="addPeriodsDescription">
+      <i class="fas fa-pencil-ruler fa-3x mr-4 text-indigo-500"></i>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">Add Periods Tool</h3>
+        <p class="text-gray-600">Automatically add periods at the end of your sentences, enhancing grammatical accuracy and text flow.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    gsap.from(".tool-intro", { duration: 1, x: -20, opacity: 0 });
+    gsap.from(".tool-description", { duration: 0.2, y: -20, opacity: 0, stagger: 0.2 });
+
+
+    document.getElementById("makePdfCopyableTool").addEventListener("click", function () {
+      showToolContent("/make-pdf-copyable-tool");
+    });
+
+    document.getElementById("pdfTool").addEventListener("click", function () {
+      showToolContent("/pdf-tool");
+    });
+
+    document.getElementById("pointTool").addEventListener("click", function () {
+      showToolContent("/point-tool");
+    });
+
+    document.getElementById("numberTool").addEventListener("click", function () {
+      showToolContent("/number-tool");
+    });
+
+    document.getElementById("caseConverterTool").addEventListener("click", function () {
+      showToolContent("/case-converter-tool");
+    });
+
+    document.getElementById("textFormatterTool").addEventListener("click", function () {
+      showToolContent("/text-formatter-tool");
+    });
+
+    document.getElementById("messageCleanerTool").addEventListener("click", function () {
+      showToolContent("/message-cleaner-tool");
+    });
+
+    document.getElementById("addPeriodsTool").addEventListener("click", function () {
+      showToolContent("/add-periods-tool");
+    });
+
+    function showToolContent(toolUrl) {
+    // Disable all tool buttons
+    document.querySelectorAll('.side-nav *').forEach(el => {
+        el.style.pointerEvents = 'none';
+    });
+
+    const mainContent = document.getElementById("mainContent");
+
+    // Clear any ongoing animations on mainContent
+    gsap.killTweensOf(mainContent);
+
+    $(mainContent).load(toolUrl, function () {
+        gsap.from(mainContent, {
+            duration: 1,
+            y: -200,
+            opacity: 0,
+            onComplete: function () {
+                // Enable all tool buttons
+                document.querySelectorAll('.side-nav *').forEach(el => {
+                    el.style.pointerEvents = '';
+                });
+            }
+        });
+    });
+}
+
+
+  </script>
+</body>
+
+</html>

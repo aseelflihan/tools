@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Make PDF Copyable</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mx-auto py-10">
+        <h2 class="text-2xl font-semibold mb-4">Make PDF Copyable</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="pdfFile" name="pdfFile" class="border rounded w-full py-2 px-3 mb-4"
+                accept="application/pdf" required>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload
+                and Process</button>
+        </form>
+        <div id="processingStatus" class="hidden mt-4">
+         <p id="uploadStatus"><span id="uploadIcon"></span> Upload waiting...</p>
+<p id="imageConversionStatus"><span id="imageIcon"></span> Converting to image waiting...</p>
+<p id="ocrStatus"><span id="ocrIcon"></span> Performing OCR waiting...</p>
+
+        </div>
+        <div id="resultBox" class="hidden mt-4 p-4 border rounded" style="width:100%; max-height: 500px; overflow:auto;">
+            <!-- Initially, this box will be empty -->
+        </div>
+        <button id="copyTextBtn" class="hidden mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Copy Text
+        </button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function updateStatus(elementId, status) {
+            const iconHtml = status ? '<i class="fas fa-check-circle text-green-500 mr-2"></i>' : '<i class="fas fa-circle-notch fa-spin mr-2"></i>';
+            const text = status ? 'Done' : 'Waiting...';
+            $(elementId).html(iconHtml + text);
+        }
+        
+        $('#uploadForm').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+        
+            // Display processing status
+            $('#processingStatus').removeClass('hidden');
+            $('#resultBox').addClass('hidden');
+            $('#copyTextBtn').addClass('hidden');
+        
+            // Update upload status to in-progress
+            updateStatus('#uploadStatus', false);
+            
+            $.ajax({
+                type: 'POST',
+                url: '/make-pdf-copyable',
+                data: formData,
+                contentType: false,
+                processData: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    // Upload progress
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            // Update upload status
+                            updateStatus('#uploadStatus', evt.loaded === evt.total);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function (response) {
+                    // Simulate progress through steps
+                    setTimeout(() => {
+                        updateStatus('#imageConversionStatus', true);
+                        setTimeout(() => {
+                            updateStatus('#ocrStatus', true);
+                            
+                            // Hide processing status
+                            $('#processingStatus').addClass('hidden');
+        
+                            // Display the OCR result
+                            $('#resultBox').removeClass('hidden');
+                            $('#resultBox').html(response.message);
+        
+                            // Show the copy text button
+                            $('#copyTextBtn').removeClass('hidden');
+                        }, 2000); // Simulated time for OCR
+                    }, 2000); // Simulated time for image conversion
+                },
+                error: function (error) {
+                    alert('Failed to process the file');
+                    // Hide processing status
+                    $('#processingStatus').addClass('hidden');
+                }
+            });
+        });
+        
+        $('#copyTextBtn').click(function () {
+            var text = $('#resultBox').text();
+            var textarea = $('<textarea>').appendTo('body').val(text).select();
+            document.execCommand('copy');
+            textarea.remove();
+        });
+    </script>
+    
+    
+</body>
+
+</html>

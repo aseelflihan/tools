@@ -1,0 +1,43 @@
+<h2 class="text-2xl font-semibold mb-4">Case Converter</h2>
+<textarea id="inputText" class="border rounded w-full py-2 px-3 mb-4 h-32"></textarea>
+<div class="flex space-x-4">
+    <button id="toUpperButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Convert to UPPERCASE
+    </button>
+    <button id="toLowerButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Convert to lowercase
+    </button>
+    <button id="toCapitalizedButton" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+        Convert to Capitalized Case
+    </button>
+</div>
+<textarea id="outputText" class="border rounded w-full py-2 px-3 mb-4 h-32 mt-4" readonly></textarea>
+
+<script>
+    function convertCase(conversionType) {
+        const inputText = document.getElementById("inputText").value;
+        fetch('/convert-case', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ inputText: inputText, conversionType: conversionType })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("outputText").value = data.outputText;
+            }
+        });
+    }
+
+    document.getElementById("toUpperButton").addEventListener("click", function () {
+        convertCase('upper');
+    });
+
+    document.getElementById("toLowerButton").addEventListener("click", function () {
+        convertCase('lower');
+    });
+
+    document.getElementById("toCapitalizedButton").addEventListener("click", function () {
+        convertCase('capitalized');
+    });
+</script>

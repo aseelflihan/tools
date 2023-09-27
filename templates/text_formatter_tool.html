@@ -1,0 +1,36 @@
+<h2 class="text-2xl font-semibold mb-4">Text Formatter</h2>
+<textarea id="inputText" class="border rounded w-full py-2 px-3 mb-4 h-32"></textarea>
+<div class="flex space-x-4">
+    <button id="removeNewLineButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Remove New Lines
+    </button>
+    <button id="dotToNewLineButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Dot to New Line
+    </button>
+</div>
+<textarea id="outputText" class="border rounded w-full py-2 px-3 mb-4 h-32 mt-4" readonly></textarea>
+
+<script>
+    function formatText(action) {
+        const inputText = document.getElementById("inputText").value;
+        fetch('/format-text', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ inputText: inputText, action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("outputText").value = data.outputText;
+            }
+        });
+    }
+
+    document.getElementById("removeNewLineButton").addEventListener("click", function () {
+        formatText('removeNewLine');
+    });
+
+    document.getElementById("dotToNewLineButton").addEventListener("click", function () {
+        formatText('dotToNewLine');
+    });
+</script>
